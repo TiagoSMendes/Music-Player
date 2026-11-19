@@ -1,0 +1,19 @@
+{
+  "_sobre": "Lido automaticamente pelo portfólio de Tiago Mendes. Edite para mudar como o projeto aparece lá.",
+  "titulo": {
+    "pt": "Music Player (Nirvana)",
+    "en": "Music player (Nirvana)"
+  },
+  "descricao": {
+    "pt": "Player com tema do álbum Nevermind, emblema giratório, player do Spotify e troca de faixa por teclado ou swipe.",
+    "en": "Nevermind-themed player with a rotating emblem, Spotify embed and keyboard or swipe navigation."
+  },
+  "tags": [
+    "JavaScript",
+    "CSS",
+    "Spotify"
+  ],
+  "site": "",
+  "imagem": "portfolio.webp",
+  "ordem": 2
+}
