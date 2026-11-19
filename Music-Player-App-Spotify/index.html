@@ -2,14 +2,16 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Tiago Mendes">
-    <meta name="description" content="Music Player">
+    <meta name="description" content="Music player com tema do álbum Nevermind, do Nirvana, e player do Spotify integrado.">
     <meta name="keywords" content="Music Player,Personal Music Player">
 
     <title>Music Player</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
@@ -18,26 +20,29 @@
 
 <body>
     <header>Music Player</header>
-    <section>
-        <div class="hero-img"></div>
+    <main>
+    <section aria-label="Álbum atual">
+        <div class="hero-img" role="img" aria-label="Arte do álbum"></div>
 
-        <div class="emblem-container">
+        <div class="emblem-container" aria-hidden="true">
             <div class="emblem text"></div>
         </div>
-        <h1 class="text" value="4">
+        <h1 class="text">
             <span class="album-num"></span>
             <span class="album-title"></span><span>Nirvana</span>
         </h1>
+        <p class="track-title text" aria-live="polite"></p>
     </section>
     <div class="spotify-widget">
-        <iframe src="https://open.spotify.com/embed/track/4CeeEOM32jQcH3eN9Q2dGj?utm_source=generator" 
+        <iframe title="Player do Spotify" src="https://open.spotify.com/embed/track/4CeeEOM32jQcH3eN9Q2dGj?utm_source=generator" 
         width="100%" height="152" frameBorder="0" allowfullscreen="" 
         allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
     <div class="button-container">
-        <button class="scroll-left nav-arrow"><span></span>Prev</button>
-        <button class="scroll-right nav-arrow">Next<span></span></button>
+        <button class="scroll-left nav-arrow" aria-label="Música anterior (seta para a esquerda)"><span aria-hidden="true"></span>Anterior</button>
+        <button class="scroll-right nav-arrow" aria-label="Próxima música (seta para a direita)">Próxima<span aria-hidden="true"></span></button>
     </div>
+    </main>
 </body>
 </html>
   

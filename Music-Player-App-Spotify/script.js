@@ -7,10 +7,12 @@ const emblemDiv = document.querySelector(".emblem");
 const albumTitleSpan = document.querySelector(".album-title");
 const texts = document.querySelectorAll(".text");
 const albumNum = document.querySelector(".album-num");
+const trackTitle = document.querySelector(".track-title");
 const spotifyWidget = document.querySelector(".spotify-widget iframe");
 const albums = [
 	{
 		album: "Nevermind",
+		track: "Smells Like Teen Spirit",
 		emblem: "Nirvana Nevermind Smells Like Teen Spirit",
 		"bg-color": ["#079ade", "#00467e"],
 		"accent-color": "#40f2fe",
@@ -20,6 +22,7 @@ const albums = [
 	},
     {
 		album: "Nevermind",
+		track: "Come As You Are",
 		emblem: "Nirvana Nevermind Come As You Are",
 		"bg-color": ["#079ade", "#00467e"],
 		"accent-color": "#40f2fe",
@@ -29,6 +32,7 @@ const albums = [
 	},
 	{
 		album: "Nevermind",
+		track: "Lithium",
 		emblem: "Nirvana Nevermind Lithium",
 		"bg-color": ["#079ade", "#00467e"],
 		"accent-color": "#40f2fe",
@@ -38,6 +42,7 @@ const albums = [
 	},
 	{
 		album: "Nevermind",
+		track: "Something In The Way",
 		emblem: "Nirvana Nevermind Something In The Way",
 		"bg-color": ["#079ade", "#00467e"],
 		"accent-color": "#40f2fe",
@@ -77,6 +82,19 @@ const handleKeyScroll = (e) => {
 	}
 };
 let index = 0;
+const reduzirMovimento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Arrastar para o lado no celular troca de música
+let toqueInicioX = null;
+sectionContainer.addEventListener("touchstart", (e) => {
+	toqueInicioX = e.touches[0].clientX;
+}, { passive: true });
+sectionContainer.addEventListener("touchend", (e) => {
+	if (toqueInicioX === null || scrollLeft.disabled) return;
+	const distancia = e.changedTouches[0].clientX - toqueInicioX;
+	if (Math.abs(distancia) > 50) handleClickScroll(distancia < 0 ? 1 : -1);
+	toqueInicioX = null;
+});
 
 const updateDisplay = (index) => {
 	let DELIMITER = "";
@@ -89,7 +107,7 @@ const updateDisplay = (index) => {
 	scrollRight.disabled = true;
 	document.removeEventListener("keydown", handleKeyScroll);
 
-	sectionContainer.id = `hero-${album.album.toLowerCase().replace(" ", "-")}`;
+	sectionContainer.id = `hero-${album.album.toLowerCase().replaceAll(" ", "-")}`;
 	bodyContainer.style.background = `linear-gradient(120deg, ${album["bg-color"][0]} , ${album["bg-color"][1]} )`;
 	heroDiv.style.backgroundImage = `url(${album.url})`;
 	albumTitleSpan.textContent = album.album;
@@ -99,14 +117,20 @@ const updateDisplay = (index) => {
 	albumNum.innerText = number >= 10 ? number + "." : `0${number}.`;
 	albumNum.style.color = album["accent-color"];
 
-	if (index === 3) scrollRight.classList.add("hide-arrow");
-	else scrollRight.classList.remove("hide-arrow");
+	// Esconde as setas nas pontas da lista (antes o "3" estava fixo no código)
+	scrollLeft.classList.toggle("hide-arrow", index === 0);
+	scrollRight.classList.toggle("hide-arrow", index === albums.length - 1);
+	trackTitle.textContent = album.track;
+	spotifyWidget.title = `Player do Spotify: ${album.track}`;
 
 	createEmblem(album.emblem, DELIMITER[0] || undefined).forEach((node) =>
 		emblemDiv.append(node)
 	);
 
 	heroDiv.classList.add("album-transition");
+
+	// Se a animação estiver desligada (reduzir movimento), libera os controles na hora
+	if (reduzirMovimento) heroDiv.dispatchEvent(new Event("animationend"));
 };
 
 const createEmblem = (string, delimiter = "•") => {
@@ -118,7 +142,7 @@ const createEmblem = (string, delimiter = "•") => {
 
 	string.split("").forEach((char, idx) => {
 		const span = document.createElement("span");
-		span.innerText = char;
+		span.textContent = char;
 		span.style.transform = `rotate(${180 - degVal * idx}deg)`;
 		if (char === delimiter) span.style.color = albums[index]["accent-color"];
 		spans.push(span);
